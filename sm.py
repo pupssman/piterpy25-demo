@@ -13,13 +13,30 @@ counter_lock = asyncio.Lock()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Start telegram bot polling
-    bot_token = os.getenv("BOT_TOKEN", "YOUR_BOT_TOKEN")
+    # Configure and start telegram bot
+    bot_token = os.getenv("BOT_TOKEN")
+    if not bot_token:
+        raise ValueError("BOT_TOKEN environment variable not set")
+        
     application = Application.builder().token(bot_token).build()
+    
+    # Register handlers
     application.add_handler(CommandHandler("flash", flash_handler))
+    
+    # Start the bot in background
     await application.initialize()
     await application.start()
+    
+    # Set up webhook for production (comment out for polling)
+    # await application.bot.set_webhook(f"https://your-domain.com/webhook/{bot_token}")
+    
+    # Start polling in background
+    await application.updater.start_polling()
+    
     yield
+    
+    # Cleanup
+    await application.updater.stop()
     await application.stop()
 
 app = FastAPI(lifespan=lifespan)
