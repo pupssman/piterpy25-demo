@@ -48,7 +48,7 @@ app = FastAPI(lifespan=lifespan)
 
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Send welcome message to new users."""
-    await update.message.reply_text("Welcome to FlashBot! ⚡\nPost /flash to shine!")
+    await update.message.reply_text("Welcome to PiterPy 2025 Micropython Demo Bot! ⚡\nPost /flash to shine!")
 
 async def flash_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global flash_counter
