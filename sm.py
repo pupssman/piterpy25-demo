@@ -28,6 +28,7 @@ async def lifespan(app: FastAPI):
 
     # Register handlers
     application.add_handler(CommandHandler("flash", flash_handler))
+    application.add_handler(CommandHandler("start", start_handler))
 
     # Start the bot in background
     await application.initialize()
@@ -44,6 +45,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+
+async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Send welcome message to new users."""
+    await update.message.reply_text("Welcome to FlashBot! ⚡\nPost /flash to shine!")
 
 async def flash_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global flash_counter
