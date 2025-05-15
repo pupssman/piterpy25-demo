@@ -29,7 +29,7 @@ def load_config():
 
 config = load_config()
 API_URL = f"http://{config['API_HOST']}/flashes"
-previous_flashes = 0
+previous_flashes = None
 
 
 def connect_wifi():
@@ -70,11 +70,13 @@ def main():
         current_flashes = get_flash_count()
 
         if current_flashes is not None:
-            if previous_flashes > current_flashes:
-                difference = previous_flashes - current_flashes
+            # Only flash if we have previous value and new count is higher
+            if previous_flashes is not None and current_flashes > previous_flashes:
+                difference = current_flashes - previous_flashes
                 print(f"Flashing {difference} times")
                 flash_led(difference)
-
+            
+            # Update previous value after comparison
             previous_flashes = current_flashes
 
         time.sleep(1)  # Check every second
