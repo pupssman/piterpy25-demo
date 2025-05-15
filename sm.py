@@ -12,6 +12,7 @@ import uvicorn
 flash_counter = 0
 counter_lock = asyncio.Lock()
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Configure and manage Telegram bot lifecycle."""
@@ -45,6 +46,8 @@ async def lifespan(app: FastAPI):
     await application.stop()
 
 app = FastAPI(lifespan=lifespan)
+
+
 
 async def flash_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global flash_counter

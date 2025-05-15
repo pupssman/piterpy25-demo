@@ -1,6 +1,5 @@
 import network
 import urequests
-import machine
 import time
 from machine import Pin
 
@@ -11,7 +10,7 @@ led = Pin(LED_PIN, Pin.OUT)
 
 
 def load_config():
-    """Load configuration from env.txt file or raise error with LED indication."""
+    """Load config from env.txt or raise error with LED indication."""
     try:
         with open('env.txt') as f:
             return dict(line.strip().split('=') for line in f)
@@ -30,6 +29,7 @@ def load_config():
 config = load_config()
 API_URL = f"http://{config['API_HOST']}/flashes"
 previous_flashes = 0
+
 
 def connect_wifi():
     """Connect to WiFi using credentials from config."""
@@ -55,7 +55,7 @@ def get_flash_count():
         response = urequests.get(API_URL)
         data = response.json()
         return data.get('num_flashes', 0)
-    except:
+    except Exception:
         return None
 
 def main():
