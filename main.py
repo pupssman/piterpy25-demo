@@ -1,12 +1,16 @@
 import network
 import urequests
 import time
+import neopixel
 from machine import Pin
 
 LED_PIN = 2  # Built-in LED typically on GPIO2
+NP_PIN = 4  # GPIO 4 aka pin D2
+NP_LEDS = 25  # 25 leds in NeoPixel strip 
 
 # Initialize LED early for error reporting
 led = Pin(LED_PIN, Pin.OUT)
+np = neopixel.NeoPixel(Pin(NP_PIN, Pin.OUT), NP_LEDS)
 
 # on my board, led is inverted -- set to ON to kill the ligh
 led.on()
@@ -52,8 +56,31 @@ def flash_led(times):
     for _ in range(times):
         led.off()
         time.sleep(0.05)  # 50ms on
+        flash_np_once()
         led.on()
         time.sleep(0.05)  # 50ms off
+
+
+def mc(color, x):
+    return (int(x * color[0]), int(x * color[1]), int(x * color[2]))
+
+
+def flash_np_once():
+    c = 0, 100, 50
+
+    wave_size = 10
+
+    # total wave_size + wave_size + NP_LEDS bits in wave
+    wave = [(0, 0, 0)] * NP_LEDS + [mc(c, x / wave_size) for x in list(range(wave_size)) + list(range(wave_size, 0, -1))] 
+
+    # frames
+    for wn in range(len(wave)):
+        wave = wave[1:] + wave[:1]
+        # each frame
+        for i in range(NP_LEDS):
+            np[i] = wave[i]
+
+        np.write()
 
 
 def get_flash_count():
