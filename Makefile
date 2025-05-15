@@ -1,6 +1,6 @@
 # Docker management
 DOCKER_IMAGE = esp-api-flasher
-DOCKER_PORT = 8080
+DOCKER_PORT = 2515
 
 .PHONY: build run flash reboot flash_reboot
 
@@ -10,7 +10,8 @@ build:
 
 # Run Docker container
 run:
-	docker run --env-file .env.bot -p $(DOCKER_PORT):8080 $(DOCKER_IMAGE)
+	docker rm -f mpd-bot || /bin/true
+	docker run -d --env-file .env.bot -p $(DOCKER_PORT):8080 --name mpd-bot $(DOCKER_IMAGE) 
 
 # ESP8266 management
 SERIAL_PORT = /dev/ttyUSB0
