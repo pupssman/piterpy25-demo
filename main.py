@@ -4,24 +4,30 @@ import machine
 import time
 from machine import Pin
 
+LED_PIN = 2  # Built-in LED typically on GPIO2
+
+# Initialize LED early for error reporting
+led = Pin(LED_PIN, Pin.OUT)
+
 # Configuration
 def load_config():
     try:
         with open('env.txt') as f:
             return dict(line.strip().split('=') for line in f)
     except:
-        return {
-            'WIFI_SSID': 'YOUR_WIFI_SSID',
-            'WIFI_PASSWORD': 'YOUR_WIFI_PASSWORD',
-            'API_HOST': '192.168.100.100:8080'
-        }
+        print("Critical error: Missing env.txt configuration file")
+        # Flash LED 5 times slowly (1 second on/off)
+        for _ in range(5):
+            led.on()
+            time.sleep(1)
+            led.off()
+            time.sleep(1)
+        # Hang the system
+        while True:
+            time.sleep(1)
 
 config = load_config()
 API_URL = f"http://{config['API_HOST']}/flashes"
-LED_PIN = 2  # Built-in LED typically on GPIO2
-
-# Initialize LED
-led = Pin(LED_PIN, Pin.OUT)
 previous_flashes = 0
 
 def connect_wifi():
