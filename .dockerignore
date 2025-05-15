@@ -1,0 +1,25 @@
+# Aider-related files
+*.aider*
+.aider*
+.aider
+
+# Python development artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.env
+venv/
+
+# Docker and build files
+Dockerfile
+docker-compose.yml
+Makefile
+
+# Version control
+.git
+.gitignore
+
+# Local configuration
+.env
+.env.local
