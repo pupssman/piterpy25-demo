@@ -2,7 +2,10 @@
 DOCKER_IMAGE = esp-api-flasher
 DOCKER_PORT = 2515
 
-.PHONY: build run flash reboot flash_reboot
+.PHONY: all build run flash reboot flash_reboot
+
+# Complete setup and deployment
+all: build run flash_reboot
 
 # Build Docker image
 build:
@@ -36,5 +39,6 @@ help:
 	@echo "  flash      - Upload code to ESP8266"
 	@echo "  reboot     - Reboot ESP8266"
 	@echo "  flash_reboot - Upload code and reboot ESP8266"
+	@echo "  all         - Build, run, flash and reboot (full deployment)"
 
 .DEFAULT_GOAL := help
