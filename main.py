@@ -26,6 +26,7 @@ def load_config():
         while True:
             time.sleep(1)
 
+
 config = load_config()
 API_URL = f"http://{config['API_HOST']}/flashes"
 previous_flashes = 0
@@ -42,6 +43,7 @@ def connect_wifi():
             time.sleep(0.5)
     print('Network config:', sta_if.ifconfig())
 
+
 def flash_led(times):
     """Flash LED with 100ms intervals (50ms on/off)."""
     for _ in range(times):
@@ -50,6 +52,7 @@ def flash_led(times):
         led.off()
         time.sleep(0.05)  # 50ms off
 
+
 def get_flash_count():
     try:
         response = urequests.get(API_URL)
@@ -57,6 +60,7 @@ def get_flash_count():
         return data.get('num_flashes', 0)
     except Exception:
         return None
+
 
 def main():
     global previous_flashes
@@ -74,6 +78,7 @@ def main():
             previous_flashes = current_flashes
 
         time.sleep(1)  # Check every second
+
 
 if __name__ == '__main__':
     main()

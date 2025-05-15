@@ -33,9 +33,6 @@ async def lifespan(app: FastAPI):
     await application.initialize()
     await application.start()
 
-    # Set up webhook for production (comment out for polling)
-    # await application.bot.set_webhook(f"https://your-domain.com/webhook/{bot_token}")
-
     # Start polling in background
     await application.updater.start_polling()
 
@@ -48,12 +45,12 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
-
 async def flash_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global flash_counter
     async with counter_lock:
         flash_counter += 1
     await update.message.reply_text("Flash counted! ⚡")
+
 
 @app.get("/flashes")
 async def get_flashes():
