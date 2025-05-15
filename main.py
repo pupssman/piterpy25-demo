@@ -8,6 +8,9 @@ LED_PIN = 2  # Built-in LED typically on GPIO2
 # Initialize LED early for error reporting
 led = Pin(LED_PIN, Pin.OUT)
 
+# on my board, led is inverted -- set to ON to kill the ligh
+led.on()
+
 
 def load_config():
     """Load config from env.txt or raise error with LED indication."""
@@ -47,9 +50,9 @@ def connect_wifi():
 def flash_led(times):
     """Flash LED with 100ms intervals (50ms on/off)."""
     for _ in range(times):
-        led.on()
-        time.sleep(0.05)  # 50ms on
         led.off()
+        time.sleep(0.05)  # 50ms on
+        led.on()
         time.sleep(0.05)  # 50ms off
 
 
