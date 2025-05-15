@@ -43,9 +43,9 @@ def connect_wifi():
 def flash_led(times):
     for _ in range(times):
         led.on()
-        time.sleep(0.5)
+        time.sleep(0.05)  # 50ms on
         led.off()
-        time.sleep(0.5)
+        time.sleep(0.05)  # 50ms off
 
 def get_flash_count():
     try:
@@ -70,7 +70,7 @@ def main():
             
             previous_flashes = current_flashes
         
-        time.sleep(30)  # Check every 30 seconds
+        time.sleep(1)  # Check every second
 
 if __name__ == '__main__':
     main()
