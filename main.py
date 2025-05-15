@@ -9,12 +9,13 @@ LED_PIN = 2  # Built-in LED typically on GPIO2
 # Initialize LED early for error reporting
 led = Pin(LED_PIN, Pin.OUT)
 
-# Configuration
+
 def load_config():
+    """Load configuration from env.txt file or raise error with LED indication."""
     try:
         with open('env.txt') as f:
             return dict(line.strip().split('=') for line in f)
-    except:
+    except Exception:
         print("Critical error: Missing env.txt configuration file")
         # Flash LED 5 times slowly (1 second on/off)
         for _ in range(5):
@@ -31,6 +32,7 @@ API_URL = f"http://{config['API_HOST']}/flashes"
 previous_flashes = 0
 
 def connect_wifi():
+    """Connect to WiFi using credentials from config."""
     sta_if = network.WLAN(network.STA_IF)
     if not sta_if.isconnected():
         print('Connecting to WiFi...')
@@ -41,6 +43,7 @@ def connect_wifi():
     print('Network config:', sta_if.ifconfig())
 
 def flash_led(times):
+    """Flash LED with 100ms intervals (50ms on/off)."""
     for _ in range(times):
         led.on()
         time.sleep(0.05)  # 50ms on

@@ -1,24 +1,29 @@
-from fastapi import FastAPI
+import asyncio
+import os
 from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 import uvicorn
-from fastapi.responses import JSONResponse
-import os
 
 # Shared counter and lock for thread safety
 flash_counter = 0
-import asyncio
 counter_lock = asyncio.Lock()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Configure and start telegram bot
+    """Configure and manage Telegram bot lifecycle."""
     bot_token = os.getenv("BOT_TOKEN")
     if not bot_token:
         raise ValueError("BOT_TOKEN environment variable not set")
-        
-    application = Application.builder().token(bot_token).build()
+
+    application = (
+        Application.builder()
+        .token(bot_token)
+        .build()
+    )
     
     # Register handlers
     application.add_handler(CommandHandler("flash", flash_handler))
@@ -49,8 +54,11 @@ async def flash_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @app.get("/flashes")
 async def get_flashes():
+    """Endpoint to retrieve current flash count."""
     async with counter_lock:
-        return JSONResponse(content={"num_flashes": flash_counter})
+        return JSONResponse(
+            content={"num_flashes": flash_counter}
+        )
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8080)
