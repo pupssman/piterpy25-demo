@@ -1,1 +1,3 @@
 .aider*
+.env.board
+.env.bot

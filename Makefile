@@ -18,6 +18,7 @@ SERIAL_PORT = /dev/ttyUSB0
 # Flash the ESP8266
 flash:
 	ampy --port $(SERIAL_PORT) put main.py
+	ampy --port $(SERIAL_PORT) put .env.board env.txt
 
 # Reboot the ESP8266
 reboot:
