@@ -10,7 +10,7 @@ build:
 
 # Run Docker container
 run:
-	docker run -p $(DOCKER_PORT):8080 $(DOCKER_IMAGE)
+	docker run --env-file .env.bot -p $(DOCKER_PORT):8080 $(DOCKER_IMAGE)
 
 # ESP8266 management
 SERIAL_PORT = /dev/ttyUSB0
