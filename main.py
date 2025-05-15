@@ -61,18 +61,18 @@ def get_flash_count():
 def main():
     global previous_flashes
     connect_wifi()
-    
+
     while True:
         current_flashes = get_flash_count()
-        
+
         if current_flashes is not None:
             if previous_flashes > current_flashes:
                 difference = previous_flashes - current_flashes
                 print(f"Flashing {difference} times")
                 flash_led(difference)
-            
+
             previous_flashes = current_flashes
-        
+
         time.sleep(1)  # Check every second
 
 if __name__ == '__main__':
