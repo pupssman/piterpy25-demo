@@ -71,11 +71,13 @@ def main():
 
         if current_flashes is not None:
             # Only flash if we have previous value and new count is higher
-            if previous_flashes is not None and current_flashes > previous_flashes:
+            if previous_flashes is not None and\
+                 current_flashes > previous_flashes:
+
                 difference = current_flashes - previous_flashes
                 print(f"Flashing {difference} times")
                 flash_led(difference)
-            
+
             # Update previous value after comparison
             previous_flashes = current_flashes
 
